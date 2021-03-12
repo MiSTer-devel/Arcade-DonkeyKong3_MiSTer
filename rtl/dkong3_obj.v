@@ -39,6 +39,7 @@ module dkong3_obj
    input  [17:0]I_DLADDR,
    input   [7:0]I_DLDATA,
    input        I_DLWR,
+   input        flip_screen,
 
    output  [7:0]O_DB, // Not used
    output  [5:0]O_OBJ_DO,
@@ -74,9 +75,9 @@ reg    [3:0]W_5F2_Q;
 always@(negedge I_CLK_24M) W_5F2_Q <= W_5F2_QB;
 
 //----------  FLIP ----------------------------------------------------
-wire   W_FLIP_1  = ~I_FLIPn;                          // INV  
+wire   W_FLIP_1  = ~I_FLIPn ^ flip_screen;            // INV
 wire   W_FLIP_2  =  W_FLIP_1 ^ 1'b1;                  // INV => XOR
-wire   W_FLIP_3  = ~W_FLIP_2;                         // INV => XOR => INV 
+wire   W_FLIP_3  = ~W_FLIP_2;                         // INV => XOR => INV
 wire   W_FLIP_4  =  W_FLIP_3 | W_5F2_Q[0];
 wire   W_FLIP_5  = ~W_FLIP_4;
 
@@ -129,7 +130,7 @@ reg    [7:0]W_6N_Q;
 always@(negedge I_CLK_12M) W_6N_Q <= W_OBJ_DI;
 
 wire   [7:0]W_78R_A = W_6N_Q;
-wire   [7:0]W_78R_B = {4'b1111,I_FLIPn,W_FLIP_1,W_FLIP_1,1'b1}; 
+wire   [7:0]W_78R_B = {4'b1111,I_FLIPn ^ flip_screen,W_FLIP_1,W_FLIP_1,1'b1}; 
 
 wire   [8:0]W_78R_Q = W_78R_A + W_78R_B + 8'b00000001;
 

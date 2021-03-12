@@ -28,6 +28,8 @@ module dkong3_hv_count
    input        I_CLK, // 24.576MHz
    input        I_RST_n,
    input        I_VFLIP,
+   input   [8:0]H_OFFSET,
+   input   [8:0]V_OFFSET,
 
    output       O_CLK,
    output  [9:0]H_CNT,
@@ -40,11 +42,12 @@ module dkong3_hv_count
    output       V_SYNCn
 );
 
+// parameters tuned to work with flip-screen switch modification
 parameter H_count = 1536;
-parameter H_BL_P  = 511;
-parameter H_BL_W  = 767;
-parameter V_CL_P  = 576;
-parameter V_CL_W  = 640;
+parameter H_BL_P  = 513;
+parameter H_BL_W  = 0;
+parameter V_CL_P  = 575;
+parameter V_CL_W  = 639;
 
 parameter V_BL_P  = 239;
 parameter V_BL_W  = 15;
@@ -56,7 +59,7 @@ begin
 end
 
 assign H_CNT[9:0] = H_CNT_r[10:1];
-assign O_CLK      = H_CNT_r[0]   ; 
+assign O_CLK      = H_CNT_r[0];
 
 reg    V_CLK = 1'b0;
 reg    H_BLANK = 1'b0;
@@ -64,9 +67,9 @@ always@(posedge O_CLK)
 begin
   case(H_CNT[9:0])
     H_BL_P: H_BLANK <= 1;
-    V_CL_P: V_CLK   <= 1;
     H_BL_W: H_BLANK <= 0;
-    V_CL_W: V_CLK   <= 0;
+    V_CL_P + H_OFFSET*2: V_CLK   <= 1;
+    V_CL_W + H_OFFSET*2: V_CLK   <= 0;
     default:;
   endcase
 end
@@ -99,7 +102,7 @@ begin
 end
 
 assign V_CNT[7:0]  = V_CNT_r[7:0];
-assign V_SYNCn     = ~V_CNT_r[8];
+assign V_SYNCn    = (V_CNT_r > 255 - V_OFFSET) ^ (V_CNT_r < 9'd511 - V_OFFSET);
 assign V_BLANKn    = ~V_BLANK;
 assign C_BLANKn    = ~(H_BLANK | V_BLANK);
 assign VF_CNT[7:0] = V_CNT ^ {8{I_VFLIP}};

@@ -138,9 +138,12 @@ assign VIDEO_ARY = (!ar) ? (status[2]  ? 8'd3 : 8'd4) : 12'd0;
 localparam CONF_STR = {
    "A.DKONG3;;",
    "-;",
-	"H0OJK,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
+   "H0OJK,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
    "O2,Orientation,Vert,Horz;",
    "O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
+   "O7,Flip Screen,Off,On;",
+   "OOS,Analog Video H-Pos,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31;",
+   "OTV,Analog Video V-Pos,0,1,2,3,4,5,6,7;",
    "-;",
    "DIP;",
    "-;",
@@ -352,6 +355,10 @@ dkong3_top dkong3
    .O_VGA_VSYNCn(vs),
    .O_HBLANK(hbl0),
    .O_VBLANK(vblank),
+
+   .flip_screen(status[7]),
+   .H_OFFSET(status[28:24]),
+   .V_OFFSET(status[31:29]),
 
    .O_PIX(clk_pix),
    .O_SOUND_DAT(sample_signed)
