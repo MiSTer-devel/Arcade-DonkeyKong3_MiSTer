@@ -25,6 +25,7 @@ module dkong3_video
    input  [17:0]I_DLADDR,
    input   [7:0]I_DLDATA,
    input        I_DLWR,
+   input        flip_screen,
 
    output  [7:0]O_VRAM_DB,
    output       O_VRAMBUSYn,
@@ -107,6 +108,7 @@ dkong3_obj sprites
    .I_DLADDR(I_DLADDR),
    .I_DLDATA(I_DLDATA),
    .I_DLWR(I_DLWR),
+   .flip_screen(flip_screen),
 
    .O_DB(W_OBJ_DB), // not used
    .O_OBJ_DO(W_OBJ_DAT),

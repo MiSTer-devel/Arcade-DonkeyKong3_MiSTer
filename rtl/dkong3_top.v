@@ -22,6 +22,10 @@ module dkong3_top
    input    [7:0]dn_data,
    input         dn_wr,
 
+   input         flip_screen,
+   input    [8:0]H_OFFSET,
+   input    [8:0]V_OFFSET,
+
    output   [3:0]O_VGA_R,
    output   [3:0]O_VGA_G,
    output   [3:0]O_VGA_B,
@@ -58,6 +62,8 @@ dkong3_hv_count hv
    .I_CLK(I_CLK_24M),
    .I_RST_n(W_RESETn),
    .I_VFLIP(W_FLIP_HV),
+   .H_OFFSET(H_OFFSET),
+   .V_OFFSET(V_OFFSET),
 
    .O_CLK(W_CLK_12M),
    .H_CNT(W_H_CNT),
@@ -171,6 +177,7 @@ dkong3_video vid
    .I_DLADDR(dn_addr), 
    .I_DLDATA(dn_data),
    .I_DLWR(dn_wr),
+   .flip_screen(flip_screen),
 
    .O_VRAM_DB(W_VRAM_DB),
    .O_VRAMBUSYn(W_VRAMBUSYn),

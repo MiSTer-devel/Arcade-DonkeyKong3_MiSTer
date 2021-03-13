@@ -53,7 +53,7 @@ wire   [7:0]WO_DB;
 
 assign O_DB       = I_VRAM_RDn ? 8'h00: WO_DB;
 
-wire   [4:0]W_HF_CNT  = I_H_CNT[8:4]^{I_FLIP,I_FLIP,I_FLIP,I_FLIP,I_FLIP};
+wire   [4:0]W_HF_CNT  = I_H_CNT[8:4]^{5{I_FLIP}};
 wire   [9:0]W_cnt_AB  = {I_VF_CNT[7:3],W_HF_CNT[4:0]};
 wire   [9:0]W_vram_AB = I_CMPBLK ? W_cnt_AB : I_AB ;
 wire        W_vram_CS = I_CMPBLK ? 1'b0     : I_VRAM_WRn & I_VRAM_RDn;
@@ -91,7 +91,7 @@ always@(negedge I_CLK_24M) begin
 
    reg CLK_2Mp, H_CNT0p;
 
-   CLK_2M  <= ~(I_H_CNT[1]&I_H_CNT[2]&I_H_CNT[3]);
+   CLK_2M  <= ~(&I_H_CNT[3:1]);
    CLK_2Mp <= CLK_2M;
    
    if (CLK_2Mp && !CLK_2M) COL <= W_2N_DO[3:0];
