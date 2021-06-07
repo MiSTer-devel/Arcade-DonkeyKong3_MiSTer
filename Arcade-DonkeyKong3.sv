@@ -151,7 +151,7 @@ localparam CONF_STR = {
    "R0,Reset;",
    "J1,Jump,Start 1P,Start 2P,Coin,Test;",
    "jn,A,Start,Select,R,;",
-   "jn,B,Start,,Select,;",
+   "jn,B,Start,Select,R,;",
    "V,v",`BUILD_DATE
 };
 
@@ -242,8 +242,8 @@ joy8way joy2
 wire m_fire   = joy_0[4];
 wire m_fire_2 = joy_1[4];
 
-wire m_start1 =  joy_0[5] | joy_1[5];
-wire m_start2 =  joy_0[6] | joy_1[6];
+wire m_start1 =  joy_0[5];
+wire m_start2 =  joy_0[6] | joy_1[5];
 wire m_coin   = joy_0[7] | joy_1[7];
 
 wire m_test = joy_0[8] | joy_1[8];
